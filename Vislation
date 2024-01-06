@@ -1,0 +1,1 @@
+sc.pl.stacked_violin(adata, marker_genes, groupby='celltypes', rotation=90,use_raw=True, save='Vlinplot.pdf')
