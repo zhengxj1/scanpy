@@ -1,1 +1,20 @@
 sc.pl.stacked_violin(adata, marker_genes, groupby='celltypes', rotation=90,use_raw=True, save='Vlinplot.pdf')
+
+
+
+sc.pl.umap(adata, color='celltypes', legend_loc='on data', title='', frameon=True, save='UMAP celltypes.pdf')
+sc.pl.umap(adata, color='sample', legend_loc='on data', title='',  frameon=True,, save='UMAP sample.pdf')
+
+
+
+
+
+
+
+
+
+
+
+
+
+adata.obs.index=adata.obs['sample']+'_'+adata.obs.index
