@@ -1,0 +1,8 @@
+adata_dict = {}  # 初始化一个字典来存储拆分后的子集
+for celltype in unique_celltypes:
+    # 拆分adata，选择当前celltype的所有细胞
+    adata_subset = adata[adata.obs['celltypes'] == celltype].copy()
+    
+    # 将子集存储到字典中，以celltype为键
+    adata_dict[celltype] = adata_subset
+adata_OS = adata_dict['OS']
