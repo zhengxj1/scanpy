@@ -16,5 +16,6 @@ sc.pl.umap(adata, color='sample', legend_loc='on data', title='',  frameon=True,
 
 
 
-
+adata.obs['sample'] = adata.obs['sample'].astype(str)
 adata.obs.index=adata.obs['sample']+'_'+adata.obs.index
+ 
