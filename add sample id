@@ -1,0 +1,2 @@
+adata.obs['sample'] = adata.obs['sample'].astype(str)
+adata.obs.index=adata.obs['sample']+'_'+adata.obs.index
