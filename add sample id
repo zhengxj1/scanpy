@@ -16,6 +16,6 @@ adata_filtered.obs = adata_filtered.obs.join(cell_annotations)
 
 cell_annotations.rename(columns={'sample': 'ident'}, inplace=True)
 
-
-
+计算频率
+sample_freq = adata.obs['sample'].value_counts()
 
