@@ -1,2 +1,21 @@
 adata.obs['sample'] = adata.obs['sample'].astype(str)
 adata.obs.index=adata.obs['sample']+'_'+adata.obs.index
+
+
+
+cells_to_keep = adata.obs.index.isin(cell_annotations.index)
+adata_filtered = adata[cells_to_keep, :]
+
+
+# 如果CSV文件中的索引与adata.obs中的索引完全一致
+adata_filtered.obs = adata_filtered.obs.join(cell_annotations)
+
+
+
+
+
+cell_annotations.rename(columns={'sample': 'ident'}, inplace=True)
+
+
+
+
