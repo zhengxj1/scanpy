@@ -1,0 +1,5 @@
+obs修改名称
+# 例如，如果重命名.obs中的'MSC'
+slide.obs['MSC_celltype'] = slide.obs['MSC']
+# 或者，如果重命名.var中的'MSC'
+slide.var.rename(index={'MSC': 'MSC_gene'}, inplace=True)
