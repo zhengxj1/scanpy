@@ -10,3 +10,20 @@ adata.rename_categories('leiden', new_cluster_names)
 adata.obs['celltypes'].unique()
 celltype_order = ['OS', 'MSC', 'Myeloid','TNK','Endothelial', 'OC', 'B_cell', 'Myocyte','Plasma', 'Others']
 adata.obs['celltypes'] = pd.Categorical(adata.obs['celltypes'], categories=celltype_order, ordered=True)
+
+##选择亚群
+mask = ~adata.obs['leiden'].isin(['5', '9', '11', '12'])
+adata= adata[mask].copy()
+
+adata.obs['leiden'].isin(['0', '1', '5'])
+
+
+
+
+
+
+
+
+
+
+
