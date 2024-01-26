@@ -1,0 +1,12 @@
+##亚群rename
+new_cluster_names = [
+    'CD4 T', 'CD14 Monocytes',
+    'B', 'CD8 T',
+    'NK', 'FCGR3A Monocytes',
+    'Dendritic', 'Megakaryocytes']
+adata.rename_categories('leiden', new_cluster_names)
+
+##亚群levels
+adata.obs['celltypes'].unique()
+celltype_order = ['OS', 'MSC', 'Myeloid','TNK','Endothelial', 'OC', 'B_cell', 'Myocyte','Plasma', 'Others']
+adata.obs['celltypes'] = pd.Categorical(adata.obs['celltypes'], categories=celltype_order, ordered=True)
