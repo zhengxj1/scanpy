@@ -13,10 +13,10 @@ adata.obs['celltypes'] = pd.Categorical(adata.obs['celltypes'], categories=cellt
 
 ##选择亚群
 mask = ~adata.obs['leiden'].isin(['5', '9', '11', '12'])
-adata= adata[mask].copy()
+adata= adata[~adata.obs['leiden'].isin(['5', '9', '11', '12'])].copy()
 
-adata.obs['leiden'].isin(['0', '1', '5'])
-
+keep=adata.obs['leiden'].isin(['0', '1', '5'])
+adata1=adata[adata.obs['leiden'].isin(['0', '1', '5'])].copy()
 
 
 
