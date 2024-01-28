@@ -3,3 +3,24 @@ obs修改名称
 slide.obs['MSC_celltype'] = slide.obs['MSC']
 # 或者，如果重命名.var中的'MSC'
 slide.var.rename(index={'MSC': 'MSC_gene'}, inplace=True)
+
+##获取分类
+print(adata.obs['celltypes'].unique())
+
+设置level
+ordered_celltypes = ['EC1 angiogenic', 'EC2 artery', 'EC3 vein', 'Pericyte','tCAF','iCAF', 'mCAF', 'myoCAF','apCAF1', 'apCAF2', 'pCAF']
+adata.obs['celltypes'] = pd.Categorical(adata.obs['celltypes'], categories=ordered_celltypes, ordered=True)
+
+##取亚群
+selected_celltypes = ['EC1 angiogenic', 'EC2 artery', 'EC3 vein']
+selected_cells = adata.obs['celltypes'].isin(selected_celltypes)
+adata_subset = adata[selected_cells]
+
+unselected_cells = ~adata.obs['celltypes'].isin(selected_celltypes)
+adata_subset = adata[unselected_cells]
+
+
+
+
+
+
