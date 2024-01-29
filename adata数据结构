@@ -19,8 +19,9 @@ adata_subset = adata[selected_cells]
 unselected_cells = ~adata.obs['celltypes'].isin(selected_celltypes)
 adata_subset = adata[unselected_cells]
 
-
-
+cell_counts = adata.obs['orig.ident'].value_counts()
+selected_orig_ident = cell_counts[cell_counts > 10].index
+adata_filtered = adata[adata.obs['orig.ident'].isin(selected_orig_ident), :]
 
 
 
