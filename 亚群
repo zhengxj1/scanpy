@@ -18,6 +18,22 @@ adata= adata[~adata.obs['leiden'].isin(['5', '9', '11', '12'])].copy()
 keep=adata.obs['leiden'].isin(['0', '1', '5'])
 adata1=adata[adata.obs['leiden'].isin(['0', '1', '5'])].copy()
 
+##亚群合并
+adata=sc.concat([adata1,adata2,adata3],merge='same')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
