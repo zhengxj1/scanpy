@@ -51,11 +51,12 @@ adata=adata_subset
 adata= remove_small_batches(adata, 'orig.ident', min_cells=10)
 
 ###去除重复细胞
-def remove_duplicate_indices(adata, duplicate_indices):
+def remove_duplicate_cells(adata):
+    duplicate_indices = adata.obs.index[adata.obs.index.duplicated()]
     mask = ~adata.obs.index.isin(duplicate_indices)
     adata_unique = adata[mask].copy()
     return adata_unique
-
+adata=remove_duplicate_cells(adata)
 
 
 
