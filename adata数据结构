@@ -6,6 +6,8 @@ slide.var.rename(index={'MSC': 'MSC_gene'}, inplace=True)
 
 ##获取分类
 print(adata.obs['celltypes'].unique())
+cell_counts = adata.obs["majority_voting"].value_counts()
+print(cell_counts)
 
 设置level
 ordered_celltypes = ['EC1 angiogenic', 'EC2 artery', 'EC3 vein', 'Pericyte','tCAF','iCAF', 'mCAF', 'myoCAF','apCAF1', 'apCAF2', 'pCAF']
@@ -19,9 +21,46 @@ adata_subset = adata[selected_cells]
 unselected_cells = ~adata.obs['celltypes'].isin(selected_celltypes)
 adata_subset = adata[unselected_cells]
 
+
+####
 cell_counts = adata.obs['orig.ident'].value_counts()
 selected_orig_ident = cell_counts[cell_counts > 10].index
 adata_filtered = adata[adata.obs['orig.ident'].isin(selected_orig_ident), :]
+
+    # 计算每个batch的细胞数
+    cell_counts = adata.obs[batch_key].value_counts()
+
+    # 找出细胞数大于min_cells的batch
+    valid_batches = cell_counts[cell_counts >= min_cells].index
+
+    # 筛选这些batch的数据
+    adata_filtered = adata[adata.obs[batch_key].isin(valid_batches)].copy()
+    
+    # 返回筛选后的数据
+    return adata_filtered
+##筛选细胞数
+def subset_adata_excluding_celltypes(adata, selected_celltypes, celltype_col):
+    unselected_cells = ~adata.obs[celltype_col].isin(selected_celltypes)
+    adata_subset = adata[unselected_cells].copy()
+    return adata_subset
+
+# Example usage:
+selected_celltypes = ["OC"]
+adata_subset = subset_adata_excluding_celltypes(adata, selected_celltypes, 'celltypes')
+adata=adata_subset
+adata= remove_small_batches(adata, 'orig.ident', min_cells=10)
+
+###去除重复细胞
+def remove_duplicate_indices(adata, duplicate_indices):
+    mask = ~adata.obs.index.isin(duplicate_indices)
+    adata_unique = adata[mask].copy()
+    return adata_unique
+
+
+
+
+
+
 
 
 
