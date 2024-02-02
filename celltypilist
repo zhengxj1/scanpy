@@ -1,0 +1,34 @@
+model_low = models.Model.load(model="Immune_All_Low.pkl")
+model_high = models.Model.load(model="Immune_All_High.pkl")
+
+model_high.cell_types
+model_low.cell_types
+
+predictions_high = celltypist.annotate(
+    adata_celltypist, model=model_high, majority_voting=True
+)
+predictions_high_adata = predictions_high.to_adata()
+adata.obs["celltypist_cell_label_coarse"] = predictions_high_adata.obs.loc[
+    adata.obs.index, "majority_voting"
+]
+adata.obs["celltypist_conf_score_coarse"] = predictions_high_adata.obs.loc[
+    adata.obs.index, "conf_score"
+]
+
+sc.pl.umap(
+    adata,
+    color=["celltypist_cell_label_coarse", "celltypist_conf_score_coarse"],
+    frameon=False,
+    sort_order=False,
+    wspace=1,
+)
+
+sc.pl.dendrogram(adata, groupby="celltypist_cell_label_fine")
+
+
+
+
+
+
+
+  
