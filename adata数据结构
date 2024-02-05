@@ -4,6 +4,19 @@ slide.obs['MSC_celltype'] = slide.obs['MSC']
 # 或者，如果重命名.var中的'MSC'
 slide.var.rename(index={'MSC': 'MSC_gene'}, inplace=True)
 
+修改内容
+adata.obs['cluster'] = adata.obs['cluster'].cat.add_categories(['cycling CAF'])
+adata.obs.loc[adata.obs['leiden'] == '10', 'cluster'] = 'cycling CAF'
+
+
+修改细胞名
+adata.obs['sample'] = adata.obs['sample'].astype(str)
+adata.obs.index=adata.obs['sample']+'_'+adata.obs.index
+
+修改基因名
+adata.var['feature_name'] = adata.var['feature_name'].astype(str)
+adata.var.index=adata.var['feature_name']
+
 ##获取分类
 print(adata.obs['celltypes'].unique())
 cell_counts = adata.obs["majority_voting"].value_counts()
