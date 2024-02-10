@@ -1,3 +1,12 @@
+docker
+docker run --rm -it \
+  -v /path/to/data:/data \
+  quay.io/teichlab/celltypist:latest \
+  celltypist --indata /data/file --model Immune_All_Low.pkl --outdir /data/output
+
+
+
+加载 查看
 model_low = models.Model.load(model="Immune_All_Low.pkl")
 model_high = models.Model.load(model="Immune_All_High.pkl")
 
@@ -24,7 +33,6 @@ sc.pl.umap(
 )
 
 sc.pl.dendrogram(adata, groupby="celltypist_cell_label_fine")
-
 
 
 
