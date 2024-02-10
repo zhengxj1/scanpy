@@ -35,7 +35,105 @@ sc.pl.umap(
 sc.pl.dendrogram(adata, groupby="celltypist_cell_label_fine")
 
 
+定制
+import scanpy as sc
+import cellhint
+import os
+import pandas as pd
+import celltypist
+from celltypist import models
 
+adata_model=sc.read("scRNA_harmony.h5ad")
+sc.pp.filter_cells(adata_model, min_genes=200)
+sc.pp.filter_genes(adata_model, min_cells=10)
+adata_model.raw = adata_model
+sc.pp.normalize_total(adata_model, target_sum = 1e4)
+sc.pp.log1p(adata_model)
+adata_model.X.expm1().sum(axis = 1)[:10]
+adata_model
+
+##HVG data 
+custom_genes = ["RUNX2","IBSP","ACAN","COL2A1","SOX9",'ALPL','SPP1',#Osteoblastic and chondroblastic cells 
+          "CTSK","MMP9","ACP5", "CTSK", "MMP9",'CKB','CST3', "TNFRSF1A", "CSF1R", "CX3CR1", "NFATC1", "DCSTAMP", "ATP6V0D2", "IRF8", "BCL6", "MAFB",'TOP2A','MKI67',
+          "COL1A1","DCN","LUM","FAP",'KIT','CSF1R','CSF2R','CSF3R','CXCL8','CXCL2',"MYOG","TNNT2","MYL1",
+          "ACTA2","RGS5", "PDGFRB","CXCL12","SFRP2",
+          "CD3D","NKG7",
+          "CD14","C1QA",
+          "CD79A","MS4A1","MZB1",
+          "PECAM1","VWF",
+          "MYOG","TNNT2","MYL1",'S100A4',#all,but not special   'MMP2'不能鉴定亚型
+        "FAP","PDGFRA","MFAP5",#FAP CAF,非常重要matrix fobro involved in the remodeling of the extracellular matrix (ECM) promoting tumor cell invasion and metastasis by modifying the ECM structure and composition
+        "CFD","APOD","C3","IGF1","ITM2A","PLA2G2A","CXCL14",#Inflammatory CAFs (iCAFs)  
+        'IL6', 'IL1B', "CXCL12","CXCL13",#'COX2',inflamatory CAF  promote tumor growth and metastasis by creating an inflammatory microenvironment
+        "MMP11",'COL1A1','COL4A1','COL11A1','POSTN','DCN',"LUM",'FN1','VCAN','FBLN2',##mCAF ECM相关基因
+        "ACTA2",'MYH11','TAGLN','ACTG2','MYL9','TPM1','TPM2','MMP11','POSTN','HOPX',## myoCAF 伤口愈合基因 contractile proteins
+        "IL6",'IL11','LIF','CXCL2','CXCL8','CXCL10','CXCL12','CCL2','CCL8',##Inflammatory CAFs (iCAFs)
+        "ENO1","BNIP3","GAPDH",#Tumour-like CAFs (tCAFs) stress-response-associated genes (e.g., ENO1), and GAPDH
+        "RGS5","PDGFRB","MCAM","THY1",##perivascular-like cells,maybe also called CAF 可继续分 DES+ and MFAP5+ myofibroblasts ACTA2为αSMA involved in the production of extracellular matrix (ECM) proteins  leading to fibrosis in the tumor microenvironment
+        "MCAM",'CD34','PECAM1','CD146','IL6','CCL8',##vCAF 
+        ##"BICC1","CCN1",'PDE4D',
+        "HLA-DRA","HLA-DRB1","CD74", ###Antigen-presenting CAFs, MHC II分子，play a role in the immune response to tumors by presenting tumor antigens to T cells
+        'PLIN2','FABP4',"TREM2","FOLR2","PECAM1","CDH5",'CLDN5','ERG',"CD34","VWF","PLVAP",##general ECmarker
+             "CCL21", "PROX1",#lymphatic ECs; LECs
+             "HEY1", "IGFBP3",  #arteries
+             "CD36","CA4",'CYB5A','PRX',#capillaries 毛细血管
+              "APLNR",'KDR','VWA1','COL4A1','COL4A2', #angiogenic
+             'ACKR1',
+    "C1QA",'C1QB','CST3',"FCER1A",#DC and mono
+                  "CD1C",'FCER1A','HLA-DRA','HLA-DPB1','HLA-DPA1',#DC
+                  'CD1E','CD1C','FCER1A','HLA-DPB1','HLA-DQB1','CLEC10A','HLA-DQA2',#cDC2
+                  "CD74",##DC and B
+              'XCR1','CLNK','CLEC9A',"CADM1","ENPP1","SNX22","NCALD","DBN1","HLA-DOB","PPY",#cDC1
+                  "HMSD","ANKRD33B","LAD1","CCR7","LAMP3","CCL19","CCL22","INSM1","TNNT2","TUBB2B",#cDC3
+              'LILRA4',"IRF4",'TCF4','GZMB','CLEC4C','TSPNA13',
+               'APOE','APOC1',"CD163",'FCGR1A',#lipid-associated macrophages 
+               "SPP1",
+               'CXCL10',#CXCL10 TAM
+               "THBS1",'TRECM1',#resident tissue macrophages RTMs
+                  "CCL2", "CCL3", "CCL4", "CXCL2",#M1 TAM
+                  "CD163", "MRC1", "MS4A4", "MAF","SELENOP",'DAB2',#M2 TAM
+                "IFIT1","IFIT2","IFIT3",#IFN TAM
+                "MT1G","MT2A",'MS4A1',##CD20+ B
+   "IGHD","FCER2","TCL1A","IL4R",#naïve B cells (CD20+, CD27−, and CD38−)
+   "CD27","AIM2","TNFRSF13B",#memory B cells (CD20+, CD27+, and CD38–),
+   "S1PI2","LRMP","SUGCT","MME","MKI67","AICDA",##germinal center (GC) B cells (CD20+, CD27+, CD38+, and CD138−)
+   'SDC1',"CD79A",'IGHG1', 'MZB1',"SLAMF7", #CD138+ plasma cells
+   "IGHA1","IGHG1",##IgA plasma IgG plasma cells##MT TAM
+                "HSPA1A","HSPA1B","BAG3",
+          "MKI67","TOP2A"]
+
+sc.pp.highly_variable_genes(adata_model)
+highly_variable_genes =  adata_model.var.highly_variable.index[adata_model.var.highly_variable].tolist()
+combined_genes = list(set(highly_variable_genes + custom_genes))
+valid_genes = [gene for gene in combined_genes if gene in adata_model.var.index]
+adata_model_subset = adata_model[:, valid_genes].copy()
+new_model = celltypist.train(adata_model_subset, labels = 'maintype', n_jobs =6, 
+                             feature_selection = True, check_expression = False, use_SGD = True,mini_batch = True,
+                             balance_cell_type = True)
+
+new_model.write('celltypist_all.pkl')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Sample 500 cells from each cell type for `adata_Elmentaite`.
+# All cells from a given cell type will be selected if the cell type size is < 500.
+sampled_cell_index = celltypist.samples.downsample_adata(adata_Elmentaite, mode = 'each', n_cells = 500, by = 'Integrated_05', return_index = True)
+print(f"Number of downsampled cells for training: {len(sampled_cell_index)}")
 
 
 
