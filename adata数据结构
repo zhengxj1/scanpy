@@ -97,7 +97,14 @@ def remove_duplicate_cells(adata):
     return adata_unique
 adata=remove_duplicate_cells(adata)
 
-
+###添加metadata
+def merge_adata_metadata(adata, metadata):
+    metadata.index = metadata.index.astype(str)
+    common_cells = adata.obs_names.intersection(metadata.index)
+    adata_filtered = adata[common_cells].copy()
+    adata_filtered.obs = adata_filtered.obs.join(metadata.loc[common_cells])
+    return adata_filtered
+updated_adata = merge_adata_metadata(adata, metadata)
 
 
 
