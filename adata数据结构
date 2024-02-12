@@ -29,8 +29,8 @@ adata.obs.loc[adata.obs['leiden'] == '10', 'cluster'] = 'cycling CAF'
 
 
 修改细胞名
-adata.obs['sample'] = adata.obs['sample'].astype(str)
-adata.obs.index=adata.obs['sample']+'_'+adata.obs.index
+adata.obs['orig.ident'] = adata.obs['orig.ident'].astype(str)
+adata.obs.index=adata.obs['orig.ident']+'_'+adata.obs.index
 
 提取细胞名
 def extract_sample_from_index(adata):
