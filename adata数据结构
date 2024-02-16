@@ -17,8 +17,8 @@ sample_to_treatment = {
     'OS1': 'Pre-chemotherapy', 'OS2': 'Pre-chemotherapy','OS3': 'Pre-chemotherapy','OS4': 'Pre-chemotherapy','OS5': 'Pre-chemotherapy','OS6': 'Pre-chemotherapy',
     'BC10': 'Post-chemotherapy', 'BC11': 'Post-chemotherapy', 'BC16': 'Post-chemotherapy', 'BC17': 'Post-chemotherapy', 'BC2': 'Post-chemotherapy', 'BC20': 'Post-chemotherapy', 
 'BC21': 'Post-chemotherapy', 'BC22': 'Post-chemotherapy', 'BC3': 'Post-chemotherapy', 'BC5': 'Post-chemotherapy', 'BC6': 'Post-chemotherapy', 
-'BS3': 'Post-chemotherapy', 'BS5': 'Post-chemotherapy', 'BS14': 'Post-chemotherapy', 'BS9': 'Post-chemotherapy', 
-'BS1': 'Post-chemotherapy', 'BS2': 'Post-chemotherapy', 'BS4': 'Pre-chemotherapy','BS6': 'Pre-chemotherapy','BS7': 'Pre-chemotherapy','BS12': 'Pre-chemotherapy',
+'BS3': 'Post-chemotherapy', 'BS5': 'Post-chemotherapy', 'BS9': 'Post-chemotherapy', 
+'BS1': 'Pre-chemotherapy', 'BS2': 'Pre-chemotherapy', 'BS4': 'Pre-chemotherapy','BS6': 'Pre-chemotherapy','BS7': 'Pre-chemotherapy','BS12': 'Pre-chemotherapy','BS14': 'Pre-chemotherapy', 
 }
 # 使用map函数根据sample列映射到Treatment
 adata.obs['Treatment'] = adata.obs['sample'].map(sample_to_treatment)
