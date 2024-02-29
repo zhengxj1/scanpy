@@ -106,8 +106,9 @@ def merge_adata_metadata(adata, metadata):
     return adata_filtered
 updated_adata = merge_adata_metadata(adata, metadata)
 
+###去除部分基因
 
-
-
+genes_to_remove = [gene for gene in strings if gene in adata.var_names]
+adata_filtered = adata[:, ~adata.var_names.isin(genes_to_remove)]
 
 
