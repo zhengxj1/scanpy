@@ -12,6 +12,17 @@ adata.obs['celltypes'] = adata.obs['celltypist'].copy()
 ordered_celltypes = ['EC1 angiogenic', 'EC2 artery', 'EC3 vein', 'Pericyte','tCAF','iCAF', 'mCAF', 'myoCAF','apCAF1', 'apCAF2', 'pCAF']
 adata.obs['celltypes'] = pd.Categorical(adata.obs['celltypes'], categories=ordered_celltypes, ordered=True)
 
+sample_to_treatment = {
+  'OS1': 'Primary', 'OS2': 'Primary','OS3': 'Primary','OS4': 'Primary','OS5': 'Primary','OS6': 'Primary',
+  'BC10': 'Metastasis', 'BC11': 'Recurrent', 'BC16': 'Primary', 'BC17': 'Metastasis', 'BC2': 'Primary', 'BC20': 'Recurrent', 
+  'BC21': 'Primary', 'BC22': 'Primary', 'BC3': 'Primary', 'BC5': 'Primary', 'BC6': 'Primary', 
+  'BS3': 'Primary', 'BS5': 'Primary', 'BS9': 'Primary', 
+  'BS1': 'Primary', 'BS2': 'Primary', 'BS4': 'Primary','BS6': 'Primary','BS7': 'Recurrent','BS12': 'Primary','BS14': 'Primary', 
+}
+
+ordered_celltypes = ["OS","MSC","Myeloid","TNK","Endothelium",
+                     "OC","B_cell","Myocyte","Plasma","Mast"]
+
 增加内容
 sample_to_treatment = {
     'OS1': 'Pre-chemotherapy', 'OS2': 'Pre-chemotherapy','OS3': 'Pre-chemotherapy','OS4': 'Pre-chemotherapy','OS5': 'Pre-chemotherapy','OS6': 'Pre-chemotherapy',
